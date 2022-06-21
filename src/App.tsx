@@ -11,44 +11,6 @@ export interface DiaryInfo {
   created_date: number;
 }
 
-// const dummyList: Array<DiaryInfo> = [
-//   {
-//     id: 1,
-//     author: "사용자1",
-//     content: "내용",
-//     emotion: 5,
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 2,
-//     author: "사용자2",
-//     content: "내용2",
-//     emotion: 2,
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 3,
-//     author: "사용자4",
-//     content: "내용3",
-//     emotion: 4,
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 4,
-//     author: "사용자4",
-//     content: "내용4",
-//     emotion: 1,
-//     created_date: new Date().getTime(),
-//   },
-//   {
-//     id: 5,
-//     author: "사용자5",
-//     content: "내용5",
-//     emotion: 3,
-//     created_date: new Date().getTime(),
-//   },
-// ];
-
 function App() {
   const [data, setData] = useState<Array<DiaryInfo>>([]);
   const dataId = useRef(0);
@@ -65,10 +27,17 @@ function App() {
     dataId.current += 1;
     setData([newItem, ...data]);
   };
+
+  const onDelete = (targetId: number) => {
+    console.log(`${targetId}가 삭제되었습니다.`);
+    const newDiaryList = data.filter((it) => it.id !== targetId);
+    setData(newDiaryList);
+  };
+
   return (
     <div className="App">
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} />
+      <DiaryList onDelete={onDelete} diaryList={data} />
     </div>
   );
 }

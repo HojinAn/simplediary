@@ -1,12 +1,15 @@
 import { DiaryInfo } from "./App";
-
+interface ItemProps extends DiaryInfo {
+  onDelete: Function;
+}
 const DiaryItem = ({
   author,
   content,
   created_date,
   emotion,
   id,
-}: DiaryInfo) => {
+  onDelete,
+}: ItemProps) => {
   return (
     <div className="DiaryItem">
       <div className="info">
@@ -17,6 +20,14 @@ const DiaryItem = ({
         <span className="date">{new Date(created_date).toLocaleString()}</span>
       </div>
       <div className="content">{content}</div>
+      <button
+        onClick={() => {
+          window.confirm(`${id}번재 일기를 정말 삭제하시겠습니까?`) &&
+            onDelete(id);
+        }}
+      >
+        삭제하기
+      </button>
     </div>
   );
 };
