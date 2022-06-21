@@ -1,13 +1,15 @@
 import { useRef, useState } from "react";
 
-type EventObj = {
+interface EventObj {
   target: {
     name: string;
     value: string;
   };
-};
-
-const DiaryEditor = () => {
+}
+interface EditorProps {
+  onCreate: Function;
+}
+const DiaryEditor = ({ onCreate }: EditorProps) => {
   const authorInput = useRef<HTMLInputElement>(null);
   const contentInput = useRef<HTMLTextAreaElement>(null);
 
@@ -33,7 +35,13 @@ const DiaryEditor = () => {
       contentInput.current?.focus();
       return;
     }
+    onCreate(state.author, state.content, state.emotion);
     alert("저장 성공");
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    });
   };
 
   return (
