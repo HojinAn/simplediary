@@ -1,6 +1,6 @@
 import { DiaryInfo } from "./App";
 interface ItemProps extends DiaryInfo {
-  onDelete: Function;
+  onRemove: Function;
 }
 const DiaryItem = ({
   author,
@@ -8,7 +8,7 @@ const DiaryItem = ({
   created_date,
   emotion,
   id,
-  onDelete,
+  onRemove,
 }: ItemProps) => {
   return (
     <div className="DiaryItem">
@@ -23,7 +23,7 @@ const DiaryItem = ({
       <button
         onClick={() => {
           window.confirm(`${id}번재 일기를 정말 삭제하시겠습니까?`) &&
-            onDelete(id);
+            onRemove(id);
         }}
       >
         삭제하기
