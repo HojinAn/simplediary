@@ -1,9 +1,9 @@
 import { DiaryInfo } from "./App";
 import DiaryItem from "./DiaryItem";
 
-type ListProps = {
+interface ListProps {
   diaryList: Array<DiaryInfo>;
-};
+}
 
 const DiaryList = ({ diaryList }: ListProps) => {
   return (
