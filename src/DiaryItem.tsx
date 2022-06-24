@@ -1,5 +1,5 @@
 import { DiaryInfo } from "./App";
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 interface ItemProps extends DiaryInfo {
   onRemove: Function;
   onEdit: Function;
@@ -13,6 +13,10 @@ const DiaryItem = ({
   onRemove,
   onEdit,
 }: ItemProps) => {
+  useEffect(() => {
+    console.log(`${id}번째 아이템 렌더링`);
+  });
+
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);
 
@@ -75,4 +79,4 @@ const DiaryItem = ({
     </div>
   );
 };
-export default DiaryItem;
+export default React.memo(DiaryItem);
