@@ -29,6 +29,12 @@ type Action =
   | { type: "REMOVE"; targetId: number }
   | { type: "EDIT"; targetId: number; newContent: string };
 
+type DiaryDispatch = {
+  onCreate: Function;
+  onRemove: Function;
+  onEdit: Function;
+};
+
 // https://jsonplaceholder.typicode.com/comments
 
 const reducer = (state: Array<DiaryInfo>, action: Action) => {
@@ -57,8 +63,13 @@ const reducer = (state: Array<DiaryInfo>, action: Action) => {
   }
 };
 
+export const DiaryStateContext = React.createContext<DiaryInfo[]>([]);
+
+export const DiaryDispatchContext = React.createContext<DiaryDispatch>(
+  {} as DiaryDispatch
+);
+
 function App() {
-  // const [data, setData] = useState<Array<DiaryInfo>>([]);
   const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(0);
@@ -109,6 +120,10 @@ function App() {
     dispatch({ type: "EDIT", targetId, newContent });
   }, []);
 
+  const memoizedDispatches = useMemo(() => {
+    return { onCreate, onRemove, onEdit };
+  }, []);
+
   const getDiaryAnalysis = useMemo(() => {
     const goodCount = data.filter((it) => it.emotion >= 3).length;
     const goodRatio = (goodCount / data.length) * 100;
@@ -119,14 +134,18 @@ function App() {
   const { goodCount, badCount, goodRatio } = getDiaryAnalysis;
 
   return (
-    <div className="App">
-      <DiaryEditor onCreate={onCreate} />
-      <div>전체 일기 : {data.length}</div>
-      <div>기분 좋은 일기 개수 : {goodCount}</div>
-      <div>기분 나쁜 일기 개수 : {badCount}</div>
-      <div>기분 좋은 일기 비율 : {goodRatio}</div>
-      <DiaryList onRemove={onRemove} onEdit={onEdit} diaryList={data} />
-    </div>
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          <DiaryEditor />
+          <div>전체 일기 : {data.length}</div>
+          <div>기분 좋은 일기 개수 : {goodCount}</div>
+          <div>기분 나쁜 일기 개수 : {badCount}</div>
+          <div>기분 좋은 일기 비율 : {goodRatio}</div>
+          <DiaryList />
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 }
 

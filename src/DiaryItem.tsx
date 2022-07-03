@@ -1,21 +1,14 @@
-import { DiaryInfo } from "./App";
-import React, { useEffect, useRef, useState } from "react";
-interface ItemProps extends DiaryInfo {
-  onRemove: Function;
-  onEdit: Function;
-}
+import { DiaryDispatchContext, DiaryInfo } from "./App";
+import React, { useContext, useEffect, useRef, useState } from "react";
+
 const DiaryItem = ({
   author,
   content,
   created_date,
   emotion,
   id,
-  onRemove,
-  onEdit,
-}: ItemProps) => {
-  useEffect(() => {
-    console.log(`${id}번째 아이템 렌더링`);
-  });
+}: DiaryInfo) => {
+  const { onRemove, onEdit } = useContext(DiaryDispatchContext);
 
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => setIsEdit(!isEdit);

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { DiaryDispatchContext } from "./App";
 
 interface EventObj {
   target: {
@@ -6,13 +7,9 @@ interface EventObj {
     value: string;
   };
 }
-interface EditorProps {
-  onCreate: Function;
-}
-const DiaryEditor = ({ onCreate }: EditorProps) => {
-  useEffect(() => {
-    console.log("DiaryEditor 렌더링");
-  });
+
+const DiaryEditor = () => {
+  const { onCreate } = useContext(DiaryDispatchContext);
 
   const authorInput = useRef<HTMLInputElement>(null);
   const contentInput = useRef<HTMLTextAreaElement>(null);
